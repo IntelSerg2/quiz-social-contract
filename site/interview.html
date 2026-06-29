@@ -26,8 +26,7 @@
 
 <div class="form-page__inner">
 
-  <!-- ВАЖНО: замените YOUR_FORMSPREE_ID на ваш ID с formspree.io -->
-  <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" id="mainForm" onsubmit="handleSubmit(event)">
+  <form id="mainForm" onsubmit="handleSubmit(event)">
 
     <!-- Блок 1: Личные данные -->
     <div class="form-section">
@@ -298,6 +297,10 @@
 </footer>
 
 <script>
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === ''
+  ? 'http://localhost:3001/submit'
+  : '/api/submit';
+
 function handleSubmit(e) {
   e.preventDefault();
   const btn = document.getElementById('submitBtn');
@@ -305,23 +308,34 @@ function handleSubmit(e) {
   btn.textContent = 'Отправляем...';
   btn.disabled = true;
 
-  fetch(form.action, {
+  // Собрать данные формы в объект (с поддержкой checkbox-групп)
+  const fd = new FormData(form);
+  const data = {};
+  fd.forEach((val, key) => {
+    if (data[key]) {
+      data[key] = [].concat(data[key], val);
+    } else {
+      data[key] = val;
+    }
+  });
+
+  fetch(API_URL, {
     method: 'POST',
-    body: new FormData(form),
-    headers: { 'Accept': 'application/json' }
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
   })
-  .then(r => {
-    if (r.ok) {
+  .then(r => r.json())
+  .then(json => {
+    if (json.ok) {
       form.style.display = 'none';
       document.getElementById('successPage').style.display = 'block';
       window.scrollTo(0, 0);
     } else {
-      btn.textContent = 'Ошибка — попробуйте снова';
-      btn.disabled = false;
+      throw new Error('server error');
     }
   })
   .catch(() => {
-    btn.textContent = 'Ошибка сети — попробуйте снова';
+    btn.textContent = 'Ошибка — попробуйте снова';
     btn.disabled = false;
   });
 }
