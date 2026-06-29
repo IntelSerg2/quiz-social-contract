@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Тест — подходите ли вы для социального контракта</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="quiz-page">
+
+  <!-- Header с прогрессом -->
+  <div class="quiz-header">
+    <a href="index.html" class="quiz-logo">БизнесПлан<span>.про</span></a>
+    <div class="progress-wrap">
+      <div class="progress-label" id="progressLabel">Вопрос 1 из 9</div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </div>
+
+  <!-- Тело квиза -->
+  <div class="quiz-body">
+
+    <!-- Карточка вопроса -->
+    <div class="question-card" id="questionCard">
+
+      <!-- Блок вопросов -->
+      <div id="questionsWrap">
+        <div class="question-block" id="questionBlock"></div>
+        <div class="question-text" id="questionText"></div>
+        <div class="question-subtext" id="questionSubtext"></div>
+        <div class="hint-box" id="hintBox"></div>
+        <div class="options" id="optionsWrap"></div>
+        <div class="quiz-nav">
+          <button class="quiz-back" id="backBtn" disabled onclick="goBack()">← Назад</button>
+        </div>
+      </div>
+
+      <!-- Результат: Подходите -->
+      <div class="result-screen" id="resultYes">
+        <div class="result-icon result-icon--yes">✅</div>
+        <div class="result-title">Вы подходите!</div>
+        <div class="result-sub">По вашим ответам вы соответствуете основным требованиям социального контракта. Следующий шаг — заполнить анкету, чтобы мы подготовили для вас бизнес-план.</div>
+        <ul class="result-steps">
+          <li><span>1</span><div>Заполните анкету — 10–15 минут, расскажите о своём бизнесе</div></li>
+          <li><span>2</span><div>Через 2–3 дня получите готовый бизнес-план на email</div></li>
+          <li><span>3</span><div>Подайте план в соцзащиту — мы поможем если понадобится доработка</div></li>
+        </ul>
+        <a href="interview.html" class="btn-primary btn-full">Заполнить анкету бесплатно →</a>
+        <hr class="result-divider">
+        <p style="font-size:.8rem;color:var(--muted)">Хотите сначала посмотреть пример бизнес-плана? <a href="offer.html" style="color:var(--navy)">Посмотреть демо →</a></p>
+      </div>
+
+      <!-- Результат: Возможно подходите -->
+      <div class="result-screen" id="resultMaybe">
+        <div class="result-icon result-icon--maybe">⚠️</div>
+        <div class="result-title">Есть нюансы — разберёмся</div>
+        <div class="result-sub" id="maybeText">По одному из критериев у вас могут возникнуть вопросы при подаче. Это не значит отказ — нужно уточнить детали.</div>
+        <ul class="result-steps">
+          <li><span>1</span><div>Запишитесь на бесплатную консультацию</div></li>
+          <li><span>2</span><div>Разберём вашу конкретную ситуацию за 15–20 минут</div></li>
+          <li><span>3</span><div>Скажем честно — есть ли шансы и как лучше оформить заявку</div></li>
+        </ul>
+        <a href="interview.html?mode=consult" class="btn-primary btn-full">Записаться на консультацию →</a>
+      </div>
+
+      <!-- Результат: Не подходите -->
+      <div class="result-screen" id="resultNo">
+        <div class="result-icon result-icon--no">😔</div>
+        <div class="result-title">К сожалению, не подходите</div>
+        <div class="result-sub" id="noText"></div>
+        <a href="index.html" class="btn-primary btn-full" style="background:var(--navy)">← Вернуться на главную</a>
+      </div>
+
+      <!-- Результат: Другая цель -->
+      <div class="result-screen" id="resultOther">
+        <div class="result-icon result-icon--other">ℹ️</div>
+        <div class="result-title">Это другая программа</div>
+        <div class="result-sub">Наш сервис специализируется на бизнес-планах для открытия своего дела. Для других целей соцконтракта обратитесь напрямую в органы соцзащиты или на портал Госуслуги.</div>
+        <a href="https://www.gosuslugi.ru" target="_blank" class="btn-primary btn-full" style="background:var(--navy)">Перейти на Госуслуги →</a>
+        <hr class="result-divider">
+        <p style="font-size:.8rem;color:var(--muted);text-align:center">Передумали и хотите открыть бизнес? <a href="quiz.html" style="color:var(--navy)">Пройти тест заново</a></p>
+      </div>
+
+    </div><!-- /question-card -->
+  </div><!-- /quiz-body -->
+
+</div><!-- /quiz-page -->
+
+<script>
+// ── Данные квиза ──────────────────────────────────────────────────────────────
+
+const BLOCKS = {
+  A: 'Блок А — Базовый отбор',
+  B: 'Блок Б — Имущество',
+  C: 'Блок В — Цель',
+  D: 'Блок Г — Ниша',
+  E: 'Блок Д — Опыт',
+  F: 'Блок Е — Мотивация'
+};
+
+const QUESTIONS = {
+  q1: {
+    num: 1, block: 'A',
+    text: 'Вы гражданин России?',
+    options: [
+      { text: '🇷🇺 Да, я гражданин РФ', next: 'q2' },
+      { text: '🌍 Нет, у меня другое гражданство', result: 'no', reason: 'A1' }
+    ]
+  },
+  q2: {
+    num: 2, block: 'A',
+    text: 'Вам уже исполнилось 18 лет?',
+    options: [
+      { text: '✅ Да, мне 18 лет и больше', next: 'q3' },
+      { text: '❌ Нет, мне ещё нет 18', result: 'no', reason: 'A2' }
+    ]
+  },
+  q3: {
+    num: 3, block: 'A',
+    text: 'Ваш доход ниже прожиточного минимума?',
+    subtext: 'В среднем по России — около 15–17 тысяч рублей в месяц на человека. Уточните в своём регионе.',
+    hint: '💡 Как посчитать: сложите все доходы семьи за последние 3 месяца, разделите на 3, затем на количество членов семьи. Если получилось меньше прожиточного минимума вашего региона — вы подходите.',
+    options: [
+      { text: '✅ Да, мой доход ниже прожиточного минимума', next: 'q4' },
+      { text: '🤔 Не уверен — нужно посчитать', showHint: true },
+      { text: '❌ Нет, доход выше', result: 'no', reason: 'A3' }
+    ]
+  },
+  q4: {
+    num: 4, block: 'B',
+    text: 'Сколько объектов недвижимости есть у вашей семьи?',
+    subtext: 'Квартиры, дома, земельные участки — у вас и у всех членов семьи вместе.',
+    options: [
+      { text: '🏠 Одна квартира или дом (или ничего нет)', next: 'q5' },
+      { text: '🏘️ Два объекта и больше', result: 'maybe', reason: 'B1' }
+    ]
+  },
+  q5: {
+    num: 5, block: 'C',
+    text: 'Что вы хотите сделать с помощью социального контракта?',
+    options: [
+      { text: '💼 Открыть своё дело / стать самозанятым', next: 'q6' },
+      { text: '💼 Найти работу', result: 'other' },
+      { text: '📚 Пройти обучение', result: 'other' },
+      { text: '🌱 Развивать личное подсобное хозяйство', result: 'other' }
+    ]
+  },
+  q6: {
+    num: 6, block: 'D',
+    text: 'Каким бизнесом вы хотите заниматься?',
+    options: [
+      { text: '💅 Красота и уход (парикмахер, маникюр, косметолог)', next: 'q7', niche: 'krasota' },
+      { text: '🔧 Ремонт и авто (автосервис, ремонт техники)', next: 'q7', niche: 'avto' },
+      { text: '📸 Творчество и услуги (фото, репетитор, дизайн)', next: 'q7', niche: 'uslugi' },
+      { text: '🧵 Производство (пошив, выпечка, хендмейд)', next: 'q7', niche: 'proizvodstvo' },
+      { text: '🛒 Торговля (купить и продать товар)', next: 'q6a' },
+      { text: '🌾 Сельское хозяйство / огород / животные', next: 'q7', niche: 'agro' },
+      { text: '🤔 Ещё не определился', next: 'q7', niche: 'unknown' }
+    ]
+  },
+  q6a: {
+    num: 6, block: 'D',
+    text: 'Уточним про торговлю...',
+    subtext: 'Это важно: деньги соцконтракта нельзя потратить на покупку товаров для перепродажи.',
+    options: [
+      { text: '🛠️ Буду создавать / производить товар сам', next: 'q7', niche: 'proizvodstvo' },
+      { text: '📦 Буду покупать готовый товар и продавать', result: 'maybe', reason: 'D1' }
+    ]
+  },
+  q7: {
+    num: 7, block: 'E',
+    text: 'Есть ли у вас опыт или навыки в этой сфере?',
+    hint: '💡 Опыт помогает, но не обязателен. По соцконтракту можно получить до 30 000 ₽ отдельно на обучение.',
+    options: [
+      { text: '⭐ Да, работал по этой специальности или учился', next: 'q8' },
+      { text: '👍 Немного — помогал, делал для себя или знакомых', next: 'q8' },
+      { text: '📖 Нет, буду учиться с нуля', next: 'q8', showHint: true }
+    ]
+  },
+  q8: {
+    num: 8, block: 'E',
+    text: 'Вы зарегистрированы как самозанятый или ИП?',
+    hint: '💡 Регистрация самозанятого занимает 10 минут и бесплатна — через приложение «Мой налог» или на сайте ФНС. Мы поможем разобраться.',
+    options: [
+      { text: '✅ Да, уже есть статус самозанятого или ИП', next: 'q9' },
+      { text: '📋 Нет, но готов зарегистрироваться', next: 'q9' },
+      { text: '❓ Нет и не знаю как', next: 'q9', showHint: true }
+    ]
+  },
+  q9: {
+    num: 9, block: 'F',
+    text: 'Зачем вам этот бизнес?',
+    options: [
+      { text: '🎯 Хочу сделать его основным источником дохода', result: 'yes' },
+      { text: '💰 Хочу добавить стабильный дополнительный доход', result: 'yes' },
+      { text: '🔍 Хочу попробовать — посмотреть что получится', result: 'yes-soft' },
+      { text: '🤷 Ещё не думал об этом', result: 'yes-soft' }
+    ]
+  }
+};
+
+const TOTAL_QUESTIONS = 9;
+
+const NO_REASONS = {
+  A1: 'Социальный контракт доступен только гражданам Российской Федерации с постоянной регистрацией в регионе обращения. Если ваша ситуация изменится — обращайтесь.',
+  A2: 'Социальный контракт выдаётся совершеннолетним гражданам — с 18 лет. Запомните эту возможность, она останется доступна.',
+  A3: 'Социальный контракт предназначен для граждан с доходом ниже прожиточного минимума. По вашему уровню дохода вы пока не входите в эту категорию. Если доходы снизятся или изменится состав семьи — вы сможете обратиться повторно.'
+};
+
+const MAYBE_REASONS = {
+  B1: 'Наличие нескольких объектов недвижимости может быть основанием для отказа — соцзащита может счесть, что семья способна продать или сдать имущество и получить доход. Но это зависит от региона и конкретной ситуации. Стоит разобраться на консультации.',
+  D1: 'Соцзащита почти всегда отказывает в финансировании чистой торговли — деньги нельзя потратить на закупку товаров для перепродажи. Но варианты есть: можно переформатировать бизнес как производство или найти другую нишу. Разберём на консультации.'
+};
+
+// ── Состояние ─────────────────────────────────────────────────────────────────
+
+let currentId = 'q1';
+let history = [];
+let quizData = { niche: null };
+let hintShown = false;
+
+// ── Рендер ────────────────────────────────────────────────────────────────────
+
+function render(id) {
+  currentId = id;
+  hintShown = false;
+
+  const q = QUESTIONS[id];
+  const questionsWrap = document.getElementById('questionsWrap');
+  const results = document.querySelectorAll('.result-screen');
+
+  // Показываем блок вопросов, скрываем результаты
+  questionsWrap.style.display = '';
+  results.forEach(r => r.classList.remove('active'));
+
+  // Перезапуск анимации
+  questionsWrap.style.animation = 'none';
+  questionsWrap.offsetHeight;
+  questionsWrap.style.animation = 'slideUp .3s ease';
+
+  document.getElementById('questionBlock').textContent = BLOCKS[q.block] || '';
+  document.getElementById('questionText').textContent = q.text;
+  document.getElementById('questionSubtext').textContent = q.subtext || '';
+
+  const hintBox = document.getElementById('hintBox');
+  hintBox.textContent = q.hint || '';
+  hintBox.classList.remove('visible');
+
+  // Опции
+  const wrap = document.getElementById('optionsWrap');
+  wrap.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.innerHTML = `<span class="option-btn__icon">${getIcon(opt.text)}</span><span>${opt.text.replace(/^[\S ]+\s/, '')}</span>`;
+    btn.addEventListener('click', () => answer(opt));
+    wrap.appendChild(btn);
+  });
+
+  // Прогресс
+  const num = q.num || history.length + 1;
+  const pct = Math.min(((num - 1) / TOTAL_QUESTIONS) * 100, 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Вопрос ${num} из ${TOTAL_QUESTIONS}`;
+
+  // Кнопка назад
+  document.getElementById('backBtn').disabled = history.length === 0;
+}
+
+function getIcon(text) {
+  const m = text.match(/^([\S ]+)/);
+  if (m && [...m[1]].some(c => c.codePointAt(0) > 127)) return m[1];
+  return '○';
+}
+
+function answer(opt) {
+  history.push(currentId);
+  if (opt.niche) quizData.niche = opt.niche;
+
+  if (opt.showHint) {
+    const hintBox = document.getElementById('hintBox');
+    hintBox.classList.add('visible');
+    hintShown = true;
+    return;
+  }
+
+  if (opt.result) {
+    showResult(opt.result, opt.reason);
+  } else {
+    render(opt.next);
+  }
+}
+
+function goBack() {
+  if (history.length === 0) return;
+  const prev = history.pop();
+  render(prev);
+}
+
+function showResult(type, reason) {
+  const questionsWrap = document.getElementById('questionsWrap');
+  questionsWrap.style.display = 'none';
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = 'Готово!';
+  document.getElementById('backBtn').disabled = true;
+
+  if (type === 'yes' || type === 'yes-soft') {
+    const el = document.getElementById('resultYes');
+    if (type === 'yes-soft') {
+      el.querySelector('.result-sub').textContent = 'Вы прошли проверку. Небольшой совет: соцзащита смотрит на серьёзность намерений — в анкете расскажите чётко, зачем вам этот бизнес и как планируете его развивать.';
+    }
+    el.classList.add('active');
+
+  } else if (type === 'maybe') {
+    document.getElementById('maybeText').textContent = MAYBE_REASONS[reason] || 'Есть нюансы, которые стоит разобрать на консультации.';
+    document.getElementById('resultMaybe').classList.add('active');
+
+  } else if (type === 'no') {
+    document.getElementById('noText').textContent = NO_REASONS[reason] || 'К сожалению, вы не соответствуете требованиям программы.';
+    document.getElementById('resultNo').classList.add('active');
+
+  } else if (type === 'other') {
+    document.getElementById('resultOther').classList.add('active');
+  }
+}
+
+// Старт
+render('q1');
+</script>
+</body>
+</html>

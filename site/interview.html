@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Анкета — расскажите о своём бизнесе</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="form-page">
+
+<nav class="nav">
+  <div class="container">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo">БизнесПлан<span>.про</span></a>
+      <span style="font-size:.85rem;color:var(--muted)">Анкета · 10–15 минут</span>
+    </div>
+  </div>
+</nav>
+
+<div class="form-page__header">
+  <div class="container">
+    <h1>Расскажите о своём бизнесе</h1>
+    <p>Мы используем эти данные для составления вашего бизнес-плана. Всё что напишете — конфиденциально.</p>
+  </div>
+</div>
+
+<div class="form-page__inner">
+
+  <!-- ВАЖНО: замените YOUR_FORMSPREE_ID на ваш ID с formspree.io -->
+  <form action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" id="mainForm" onsubmit="handleSubmit(event)">
+
+    <!-- Блок 1: Личные данные -->
+    <div class="form-section">
+      <div class="form-section__num">1</div>
+      <div class="form-section__title">Личные данные</div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="fio">ФИО <sup>*</sup></label>
+          <input class="form-input" type="text" id="fio" name="fio" placeholder="Иванова Мария Петровна" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="phone">Телефон <sup>*</sup></label>
+          <input class="form-input" type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="email">Email <sup>*</sup></label>
+          <input class="form-input" type="email" id="email" name="email" placeholder="example@mail.ru" required>
+          <p class="form-hint">На этот адрес пришлём готовый бизнес-план</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="region">Регион и город <sup>*</sup></label>
+          <input class="form-input" type="text" id="region" name="region" placeholder="Краснодарский край, Краснодар" required>
+          <p class="form-hint">Укажите регион и населённый пункт регистрации</p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="family">Состав семьи</label>
+          <select class="form-select" id="family" name="family">
+            <option value="">— выберите —</option>
+            <option>Живу один / одна</option>
+            <option>Семейная пара без детей</option>
+            <option>Семья с детьми до 18 лет</option>
+            <option>Неполная семья (один родитель + дети)</option>
+            <option>Многодетная семья (3 и более детей)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="familyCount">Количество человек в семье</label>
+          <input class="form-input" type="number" id="familyCount" name="familyCount" min="1" max="20" placeholder="2">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Общий доход семьи в месяц (примерно)</label>
+        <div class="form-radio-group">
+          <div class="form-radio"><input type="radio" name="income" id="inc1" value="До 10 000 ₽"><label for="inc1">До 10 000 ₽</label></div>
+          <div class="form-radio"><input type="radio" name="income" id="inc2" value="10 000 – 20 000 ₽"><label for="inc2">10 000 – 20 000 ₽</label></div>
+          <div class="form-radio"><input type="radio" name="income" id="inc3" value="20 000 – 30 000 ₽"><label for="inc3">20 000 – 30 000 ₽</label></div>
+          <div class="form-radio"><input type="radio" name="income" id="inc4" value="Выше 30 000 ₽"><label for="inc4">Выше 30 000 ₽</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Блок 2: Опыт и статус -->
+    <div class="form-section">
+      <div class="form-section__num">2</div>
+      <div class="form-section__title">Ваш опыт и статус</div>
+
+      <div class="form-group">
+        <label class="form-label" for="education">Уровень образования</label>
+        <select class="form-select" id="education" name="education">
+          <option value="">— выберите —</option>
+          <option>Среднее (школа)</option>
+          <option>Среднее специальное (колледж, техникум)</option>
+          <option>Высшее</option>
+          <option>Нет официального образования</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="eduRelevant">Образование или опыт, связанный с вашим бизнесом</label>
+        <input class="form-input" type="text" id="eduRelevant" name="eduRelevant" placeholder="Например: «закончила курсы маникюра», «работал автослесарем 5 лет»">
+        <p class="form-hint">Даже неформальный опыт — важен. Напишите что умеете</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Опыт работы в выбранной сфере</label>
+        <div class="form-radio-group">
+          <div class="form-radio"><input type="radio" name="exp" id="exp1" value="Более 3 лет"><label for="exp1">Более 3 лет</label></div>
+          <div class="form-radio"><input type="radio" name="exp" id="exp2" value="1–3 года"><label for="exp2">1–3 года</label></div>
+          <div class="form-radio"><input type="radio" name="exp" id="exp3" value="Меньше года"><label for="exp3">Меньше года</label></div>
+          <div class="form-radio"><input type="radio" name="exp" id="exp4" value="Нет опыта"><label for="exp4">Нет опыта</label></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Есть ли сейчас статус ИП или самозанятого?</label>
+        <div class="form-radio-group">
+          <div class="form-radio"><input type="radio" name="status" id="st1" value="Да, самозанятый"><label for="st1">Да, самозанятый</label></div>
+          <div class="form-radio"><input type="radio" name="status" id="st2" value="Да, ИП"><label for="st2">Да, ИП</label></div>
+          <div class="form-radio"><input type="radio" name="status" id="st3" value="Нет, готов зарегистрироваться"><label for="st3">Нет, но готов зарегистрироваться</label></div>
+          <div class="form-radio"><input type="radio" name="status" id="st4" value="Нет"><label for="st4">Нет</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Блок 3: Описание бизнеса -->
+    <div class="form-section">
+      <div class="form-section__num">3</div>
+      <div class="form-section__title">Ваш будущий бизнес</div>
+
+      <div class="form-group">
+        <label class="form-label" for="niche">Направление бизнеса <sup>*</sup></label>
+        <select class="form-select" id="niche" name="niche" required>
+          <option value="">— выберите —</option>
+          <option>💅 Красота и уход</option>
+          <option>🔧 Ремонт и авто</option>
+          <option>📸 Творчество и услуги</option>
+          <option>🧵 Производство</option>
+          <option>🌾 Сельское хозяйство</option>
+          <option>🛒 Торговля</option>
+          <option>Другое</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="activity">Конкретный вид деятельности <sup>*</sup></label>
+        <input class="form-input" type="text" id="activity" name="activity" placeholder="Например: стрижки и окрашивание на дому" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="services">Перечислите 3–5 основных услуг или товаров с примерными ценами <sup>*</sup></label>
+        <textarea class="form-textarea" id="services" name="services" rows="4" placeholder="Например:
+— Стрижка мужская — 500 ₽
+— Стрижка женская — 800 ₽
+— Окрашивание — 2 500 ₽" required></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Кто ваши клиенты?</label>
+        <div class="form-check-group">
+          <div class="form-check"><input type="checkbox" name="clients" id="cl1" value="Женщины"><label for="cl1">Женщины</label></div>
+          <div class="form-check"><input type="checkbox" name="clients" id="cl2" value="Мужчины"><label for="cl2">Мужчины</label></div>
+          <div class="form-check"><input type="checkbox" name="clients" id="cl3" value="Дети"><label for="cl3">Дети</label></div>
+          <div class="form-check"><input type="checkbox" name="clients" id="cl4" value="Пожилые люди"><label for="cl4">Пожилые люди</label></div>
+          <div class="form-check"><input type="checkbox" name="clients" id="cl5" value="Все желающие"><label for="cl5">Все желающие</label></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="workplace">Где будете работать?</label>
+        <select class="form-select" id="workplace" name="workplace">
+          <option value="">— выберите —</option>
+          <option>На дому (у себя)</option>
+          <option>С выездом к клиенту</option>
+          <option>В арендованном помещении / кресле</option>
+          <option>Ещё не знаю</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="rentCost">Если аренда — примерная стоимость в месяц</label>
+        <input class="form-input" type="text" id="rentCost" name="rentCost" placeholder="Например: 5 000 ₽ или «не знаю»">
+      </div>
+    </div>
+
+    <!-- Блок 4: Рынок -->
+    <div class="form-section">
+      <div class="form-section__num">4</div>
+      <div class="form-section__title">Рынок и конкуренты</div>
+
+      <div class="form-group">
+        <label class="form-label">Есть ли похожие услуги рядом с вами?</label>
+        <div class="form-radio-group">
+          <div class="form-radio"><input type="radio" name="competition" id="comp1" value="Много конкурентов"><label for="comp1">Да, много конкурентов</label></div>
+          <div class="form-radio"><input type="radio" name="competition" id="comp2" value="1–3 конкурента"><label for="comp2">Да, но мало (1–3 конкурента)</label></div>
+          <div class="form-radio"><input type="radio" name="competition" id="comp3" value="Нет конкурентов"><label for="comp3">Нет, буду первым в своём районе</label></div>
+          <div class="form-radio"><input type="radio" name="competition" id="comp4" value="Не знаю"><label for="comp4">Не знаю</label></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="advantage">Чем вы лучше конкурентов?</label>
+        <input class="form-input" type="text" id="advantage" name="advantage" placeholder="Например: цена ниже, выезд на дом, большой опыт, работаю в выходные">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Как будете привлекать первых клиентов?</label>
+        <div class="form-check-group">
+          <div class="form-check"><input type="checkbox" name="promo" id="pr1" value="Сарафанное радио"><label for="pr1">Сарафанное радио (знакомые, соседи)</label></div>
+          <div class="form-check"><input type="checkbox" name="promo" id="pr2" value="Авито"><label for="pr2">Авито</label></div>
+          <div class="form-check"><input type="checkbox" name="promo" id="pr3" value="ВКонтакте / Telegram"><label for="pr3">ВКонтакте / Telegram</label></div>
+          <div class="form-check"><input type="checkbox" name="promo" id="pr4" value="Листовки, объявления"><label for="pr4">Листовки, объявления</label></div>
+          <div class="form-check"><input type="checkbox" name="promo" id="pr5" value="Ещё не знаю"><label for="pr5">Ещё не знаю</label></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Блок 5: Финансы -->
+    <div class="form-section">
+      <div class="form-section__num">5</div>
+      <div class="form-section__title">Финансовый план</div>
+
+      <div class="form-group">
+        <label class="form-label">Какую сумму хотите получить по соцконтракту?</label>
+        <div class="form-radio-group">
+          <div class="form-radio"><input type="radio" name="amount" id="am1" value="До 100 000 ₽"><label for="am1">До 100 000 ₽</label></div>
+          <div class="form-radio"><input type="radio" name="amount" id="am2" value="100 000 – 200 000 ₽"><label for="am2">100 000 – 200 000 ₽</label></div>
+          <div class="form-radio"><input type="radio" name="amount" id="am3" value="200 000 – 350 000 ₽"><label for="am3">200 000 – 350 000 ₽</label></div>
+          <div class="form-radio"><input type="radio" name="amount" id="am4" value="Максимум — 350 000 ₽"><label for="am4">Максимум — 350 000 ₽</label></div>
+          <div class="form-radio"><input type="radio" name="amount" id="am5" value="Помогите посчитать"><label for="am5">Не знаю, помогите посчитать</label></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="purchases">Что планируете купить на деньги соцконтракта? <sup>*</sup></label>
+        <textarea class="form-textarea" id="purchases" name="purchases" rows="4" placeholder="Перечислите оборудование, инструменты, материалы. Например:
+— Швейная машина
+— Оверлок
+— Ткань и фурнитура (стартовый запас)
+Можно приблизительно — уточним вместе" required></textarea>
+        <p class="form-hint">Можно покупать: оборудование, инструменты, расходные материалы, аренда. Нельзя: товары для перепродажи, телефон, ремонт помещения</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="clientsPerMonth">Сколько клиентов в месяц рассчитываете принять через 3 месяца?</label>
+        <input class="form-input" type="text" id="clientsPerMonth" name="clientsPerMonth" placeholder="Например: 20–30 клиентов или 5–8 машин">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Какой доход хотите получать через 6 месяцев?</label>
+        <div class="form-radio-group">
+          <div class="form-radio"><input type="radio" name="targetIncome" id="ti1" value="До 20 000 ₽/мес"><label for="ti1">До 20 000 ₽ в месяц</label></div>
+          <div class="form-radio"><input type="radio" name="targetIncome" id="ti2" value="20 000 – 40 000 ₽/мес"><label for="ti2">20 000 – 40 000 ₽ в месяц</label></div>
+          <div class="form-radio"><input type="radio" name="targetIncome" id="ti3" value="40 000 – 60 000 ₽/мес"><label for="ti3">40 000 – 60 000 ₽ в месяц</label></div>
+          <div class="form-radio"><input type="radio" name="targetIncome" id="ti4" value="60 000+ ₽/мес"><label for="ti4">60 000 ₽ и выше</label></div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="extra">Дополнительная информация</label>
+        <textarea class="form-textarea" id="extra" name="extra" rows="3" placeholder="Любые детали о вашем бизнесе или вопросы — напишите здесь"></textarea>
+      </div>
+    </div>
+
+    <!-- Отправка -->
+    <div class="form-submit-block">
+      <button type="submit" class="btn-primary btn-full" id="submitBtn">
+        Отправить анкету и получить демо-план бесплатно →
+      </button>
+      <p class="form-submit-note">
+        Мы свяжемся с вами в течение 24 часов · Ваши данные защищены и не передаются третьим лицам
+      </p>
+    </div>
+
+  </form>
+
+  <!-- Страница успеха (скрыта) -->
+  <div id="successPage" style="display:none;text-align:center;padding:60px 0">
+    <div style="font-size:4rem;margin-bottom:20px">🎉</div>
+    <h2 style="font-family:var(--font-head);font-size:1.8rem;color:var(--navy);margin-bottom:12px">Анкета получена!</h2>
+    <p style="color:var(--muted);font-size:.95rem;line-height:1.7;max-width:420px;margin:0 auto 32px">Мы подготовим демо-версию вашего бизнес-плана в течение 24 часов и пришлём на ваш email. Если хотите ускорить — напишите нам.</p>
+    <a href="offer.html" class="btn-primary">Посмотреть пример бизнес-плана →</a>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>© 2025 БизнесПлан.про · <a href="mailto:intelserg2@gmail.com">intelserg2@gmail.com</a></p>
+  </div>
+</footer>
+
+<script>
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const form = document.getElementById('mainForm');
+  btn.textContent = 'Отправляем...';
+  btn.disabled = true;
+
+  fetch(form.action, {
+    method: 'POST',
+    body: new FormData(form),
+    headers: { 'Accept': 'application/json' }
+  })
+  .then(r => {
+    if (r.ok) {
+      form.style.display = 'none';
+      document.getElementById('successPage').style.display = 'block';
+      window.scrollTo(0, 0);
+    } else {
+      btn.textContent = 'Ошибка — попробуйте снова';
+      btn.disabled = false;
+    }
+  })
+  .catch(() => {
+    btn.textContent = 'Ошибка сети — попробуйте снова';
+    btn.disabled = false;
+  });
+}
+</script>
+</body>
+</html>
